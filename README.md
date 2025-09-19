@@ -2,6 +2,10 @@
 
 To-Do List implemented on MCP with TypeScript
 
+# Important
+
+Some agents are not executing consistently yet. It may take a few runs to get a clean run all the way through.
+
 # Running Locally
 
 1. From root, run `npm i`
