@@ -10,9 +10,12 @@ export const fetchPriorityRankingCriteria = tool({
   name: "fetch_priority_ranking_tool",
   description: "Return the priority ranking configuration.",
   parameters: z.object({}),
-  execute: (_args, runContext?: RunContext<IPriorityRankingCriteria>) => {
+  execute: (_args, runContext?: RunContext) => {
+    const context = runContext?.context as
+      | Partial<IPriorityRankingCriteria>
+      | undefined;
     return `The priority ranking criteria for high priority is 
-    ${runContext.context.high}, and for medium priority is 
-    ${runContext.context.medium}`;
+    ${context?.high}, and for medium priority is 
+    ${context?.medium}`;
   },
 });

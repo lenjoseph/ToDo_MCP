@@ -1,5 +1,7 @@
 import z from "zod";
+import { fetchPermittedCategories } from "../context/permitted_categories.context";
 import { Prompts } from "../prompts";
+import { priorityRatingTool } from "./priority_rating.agent";
 import { weatherConditionsTool } from "./weather_conditions_estimator.agent";
 
 // needs to use paralell agents in order to facilitate two creation processes
@@ -9,11 +11,7 @@ export const todoCreatorAgentConfig = {
   handoffDescription: "A specialist in creating todo items",
 
   //@ts-ignore
-  tools: [
-    // priorityRatingTool,
-    // fetchPermittedCategories,
-    weatherConditionsTool,
-  ],
+  tools: [priorityRatingTool, fetchPermittedCategories, weatherConditionsTool],
   outputType: z.object({
     id: z.string(),
     title: z.string(),

@@ -115,9 +115,8 @@ server.registerTool(
     priorityRating,
     optimalWeatherConditions,
   }) => {
-    console.error("updating");
     const updates: string[] = [];
-    const values: any[] = [id];
+    const values: any[] = [];
 
     const updateFields = {
       title,
@@ -126,7 +125,6 @@ server.registerTool(
       priority_rating: priorityRating, // Matches DB column name
       optimal_weather_conditions: optimalWeatherConditions,
     };
-
     for (const [key, value] of Object.entries(updateFields)) {
       if (value !== undefined) {
         updates.push(`${key} = ?`);
@@ -135,12 +133,11 @@ server.registerTool(
     }
 
     updates.push("updated_at = CURRENT_TIMESTAMP");
-    console.error("updates", updates);
     const sqlQuery = `UPDATE todos 
        SET ${updates.join(", ")}
        WHERE id = ?`;
 
-    const result = await database.query(sqlQuery, values);
+    const result = await database.query(sqlQuery, [...values, id]);
 
     if (result.rowCount === 0) {
       throw new Error(`Todo with id ${id} not found`);
@@ -222,9 +219,7 @@ server.registerTool(
           },
         ],
       };
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 );
 

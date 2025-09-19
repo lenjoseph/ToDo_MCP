@@ -17,6 +17,7 @@ import { PermittedCategories } from "./constants/permitted_categories";
 import { PriorityRankingCriteria } from "./constants/priority_ranking_criteria";
 import { toDoGuardRail } from "./guardrails/todo_input.guardrail";
 import { Prompts } from "./prompts";
+import { extractId } from "./util";
 
 dotenv.config();
 
@@ -96,10 +97,12 @@ async function ToDoDemo() {
     console.log("CREATE TODO OUTPUT");
     console.log(createResultOne.finalOutput);
 
+    const createdTodoId = extractId(createResultOne.finalOutput as unknown);
+
     // update the record that was created
     const updateResult = await run(
       ToDoOrchestratorAgent,
-      `Update the status for this todo item to Completed: ${createResultOne.finalOutput}`
+      `Update the status for the todo with id ${createdTodoId} to Complete.`
     );
     console.log("UPDATE RESULT OUTPUT");
     console.log(updateResult.finalOutput);
@@ -116,8 +119,7 @@ async function ToDoDemo() {
     // remove todo item
     const removeResult = await run(
       ToDoOrchestratorAgent,
-      `Remove the following todo item using the id value 
-      of this record: ${createResultOne.finalOutput}`
+      `Remove the todo item with id ${createdTodoId}.`
     );
     console.log("REMOVE RESULT OUTPUT");
     console.log(removeResult.finalOutput);
