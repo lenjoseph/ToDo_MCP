@@ -15,7 +15,7 @@ Some agents are not executing consistently yet. It may take a few runs to get a 
 
 # Architecture
 
-This application is build on the Model Context Protocol (MCP) and leverages openai's agent framework to interact with a locally-hosted MCP server.
+This application is built on the Model Context Protocol (MCP) and leverages openai's agent framework to interact with a locally-hosted MCP server.
 
 The MCP server registers DB repo methods as tools that are discovered and leveraged by the agents to facilitate various workflows.
 
