@@ -1,4 +1,4 @@
-# ButterflyMX_ToDo_MCP
+# ToDo MCP Server
 
 To-Do List implemented on MCP with TypeScript
 
