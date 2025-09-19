@@ -1,9 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { randomUUID } from "crypto";
 import z from "zod";
-import { database } from "./db/config";
 import { migrate } from "./db/migrate";
+import { createTodo } from "./db/tools/create";
+import { listTodos } from "./db/tools/list";
+import { removeTodo } from "./db/tools/remove";
+import { updateTodo } from "./db/tools/update";
 import { getCurrentWeather } from "./util/utils";
 
 // Initialize database on startup
@@ -69,27 +71,12 @@ server.registerTool(
     },
   },
   async ({ title, category, priorityRating, optimalWeatherConditions }) => {
-    const id = randomUUID();
-
-    await database.query(
-      `INSERT INTO todos (id, title, category, priority_rating, optimal_weather_conditions, status, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 'Incomplete', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
-      [id, title, category, priorityRating, optimalWeatherConditions]
-    );
-
-    // Get the inserted record
-    const insertedRecord = await database.get(
-      `SELECT * FROM todos WHERE id = ?`,
-      [id]
-    );
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(insertedRecord),
-        },
-      ],
-    };
+    return await createTodo({
+      title,
+      category,
+      priorityRating,
+      optimalWeatherConditions,
+    });
   }
 );
 
@@ -115,48 +102,14 @@ server.registerTool(
     priorityRating,
     optimalWeatherConditions,
   }) => {
-    const updates: string[] = [];
-    const values: any[] = [];
-
-    const updateFields = {
+    return await updateTodo({
+      id,
       title,
       status,
       category,
-      priority_rating: priorityRating, // Matches DB column name
-      optimal_weather_conditions: optimalWeatherConditions,
-    };
-    for (const [key, value] of Object.entries(updateFields)) {
-      if (value !== undefined) {
-        updates.push(`${key} = ?`);
-        values.push(value);
-      }
-    }
-
-    updates.push("updated_at = CURRENT_TIMESTAMP");
-    const sqlQuery = `UPDATE todos 
-       SET ${updates.join(", ")}
-       WHERE id = ?`;
-
-    const result = await database.query(sqlQuery, [...values, id]);
-
-    if (result.rowCount === 0) {
-      throw new Error(`Todo with id ${id} not found`);
-    }
-
-    // Get the updated record
-    const updatedRecord = await database.get(
-      `SELECT * FROM todos WHERE id = ?`,
-      [id]
-    );
-
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(updatedRecord),
-        },
-      ],
-    };
+      priorityRating,
+      optimalWeatherConditions,
+    });
   }
 );
 
@@ -168,28 +121,7 @@ server.registerTool(
     inputSchema: {},
   },
   async () => {
-    const result = await database.all(
-      `SELECT * FROM todos ORDER BY created_at DESC`
-    );
-    const mappedTodos = result.map((todo: any) => ({
-      id: todo.id,
-      title: todo.title,
-      status: todo.status,
-      category: todo.category,
-      priorityRating: todo.priority_rating,
-      optimalWeatherConditions: todo.optimal_weather_conditions,
-      created_at: todo.created_at,
-      updated_at: todo.updated_at,
-    }));
-
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify({ todos: mappedTodos }),
-        },
-      ],
-    };
+    return await listTodos();
   }
 );
 
@@ -203,23 +135,7 @@ server.registerTool(
     },
   },
   async ({ id }) => {
-    try {
-      const result = await database.query(`DELETE FROM todos WHERE id = ?`, [
-        id,
-      ]);
-      if (result.rowCount === 0) {
-        throw new Error(`Todo with id ${id} not found`);
-      }
-
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Successfully deleted todo with id ${id}`,
-          },
-        ],
-      };
-    } catch (error) {}
+    return await removeTodo({ id });
   }
 );
 
