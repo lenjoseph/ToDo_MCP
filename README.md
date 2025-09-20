@@ -4,7 +4,7 @@ To-Do List implemented on MCP with TypeScript
 
 # Important
 
-Some agents are not executing consistently yet. It may take a few runs to get a clean run all the way through.
+Some agents have not achieved full reliability in execution. It may take a few runs to get a clean run all the way through.
 
 # Running Locally
 
@@ -24,5 +24,3 @@ The agents are configured to adhere to specific input/output data structures, an
 # Functionality
 
 This application manages a collection of to-do items, and augments the functionality by adding metadata relative to priority, completion, and other dependencies.
-
-Tools are provisioned based on functional domain, which includes data manipulation and retrival, task prioritization, and external research for the current weather.

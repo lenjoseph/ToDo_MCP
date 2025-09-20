@@ -1,7 +1,8 @@
 export const Prompts = {
   orchestrator: `You decided which agent to handoff the query to based on the query intent.`,
   currentWeather: `You use the discovered tools to get current weather conditions for the input location. 
-                Then you determine if the current weather is optimal for the input to-do item.`,
+                Only call this tool once. Then you determine if the current weather is optimal for the input
+                to-do based on the tool response.`,
   optimalConditions: `For the provided to-do item, determine if there 
     are specific weather conditions that would make it easier to execute the task. If it doesn't matter use undefined`,
   priorityRating: `You are a specialist in rating priority category for todo items. You use the priority criteria from your tool to 
