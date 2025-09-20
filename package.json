@@ -1,5 +1,5 @@
 {
-  "name": "butterflymx_todo_mcp",
+  "name": "ToDo_MCP",
   "version": "1.0.0",
   "description": "To-Do List implemented on MCP with TypeScript",
   "main": "index.js",
