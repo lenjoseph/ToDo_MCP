@@ -1,15 +1,16 @@
 import z from "zod";
-import { Prompts } from "../prompts";
+import { AgentConfig } from "../agent_config";
+import { LLMModels } from "../constants";
 
 export const currentWeatherAgentConfig = {
-  name: "Current Weather Agent",
-  instructions: Prompts.currentWeather,
-  handoffDescription: "A specialist in checking current weather conditions.",
+  name: AgentConfig.currentWeather.name,
+  instructions: AgentConfig.currentWeather.prompt,
+  handoffDescription: AgentConfig.currentWeather.handoffDescription,
   outputType: z.object({
     conditionsOptimal: z.boolean(),
     location: z.string(),
     toDoItem: z.string(),
     recommendation: z.string(),
   }),
-  model: "gpt-4o-mini",
+  model: LLMModels.gpt4oMini,
 };

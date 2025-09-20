@@ -2,10 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import z from "zod";
 import { migrate } from "./db/migrate";
-import { createTodo } from "./db/tools/create";
-import { listTodos } from "./db/tools/list";
-import { removeTodo } from "./db/tools/remove";
-import { updateTodo } from "./db/tools/update";
+import { createTodo, listTodos, removeTodo, updateTodo } from "./db/tools";
 import { getCurrentWeather } from "./util/utils";
 
 // Initialize database on startup

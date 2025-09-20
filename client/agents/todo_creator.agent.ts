@@ -1,14 +1,14 @@
 import z from "zod";
-import { fetchPermittedCategories } from "../context/permitted_categories.context";
-import { Prompts } from "../prompts";
-import { priorityRatingTool } from "./priority_rating.agent";
-import { weatherConditionsTool } from "./weather_conditions_estimator.agent";
+import { AgentConfig } from "../agent_config";
+import { LLMModels } from "../constants";
+import { fetchPermittedCategories } from "../context";
+import { priorityRatingTool, weatherConditionsTool } from "../tools";
 
 // needs to use paralell agents in order to facilitate two creation processes
 export const todoCreatorAgentConfig = {
-  name: "Todo Item Creator",
-  instructions: Prompts.todoItemCreator,
-  handoffDescription: "A specialist in creating todo items",
+  name: AgentConfig.todoItemCreator.name,
+  instructions: AgentConfig.todoItemCreator.prompt,
+  handoffDescription: AgentConfig.todoItemCreator.handoffDescription,
 
   //@ts-ignore
   tools: [priorityRatingTool, fetchPermittedCategories, weatherConditionsTool],
@@ -22,5 +22,5 @@ export const todoCreatorAgentConfig = {
     createdAt: z.string(),
     updatedAt: z.string(),
   }),
-  model: "gpt-4.1",
+  model: LLMModels.default,
 };

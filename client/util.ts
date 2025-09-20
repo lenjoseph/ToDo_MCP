@@ -1,4 +1,3 @@
-// extract the created todo id from the agent output
 export const extractId = (output: unknown): string => {
   if (output && typeof output === "object" && (output as any).id) {
     return (output as any).id as string;

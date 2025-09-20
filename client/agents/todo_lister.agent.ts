@@ -1,11 +1,12 @@
 import z from "zod";
-import { Prompts } from "../prompts";
+import { AgentConfig } from "../agent_config";
+import { LLMModels } from "../constants";
 
 export const toDoListerAgentConfig = {
-  name: "ToDo Item Lister",
-  instructions: Prompts.todoItemLister,
-  handoffDescription: "A specialist in listing current todo items.",
-  model: "gpt-4o-mini",
+  name: AgentConfig.todoItemLister.name,
+  instructions: AgentConfig.todoItemLister.prompt,
+  handoffDescription: AgentConfig.todoItemLister.handoffDescription,
+  model: LLMModels.gpt4oMini,
   outputType: z.object({
     items: z.array(
       z.object({

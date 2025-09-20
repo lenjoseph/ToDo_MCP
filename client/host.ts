@@ -6,6 +6,7 @@ import {
 } from "@openai/agents";
 import * as dotenv from "dotenv";
 import * as path from "node:path";
+import { AgentConfig } from "./agent_config";
 import {
   currentWeatherAgentConfig,
   todoCreatorAgentConfig,
@@ -13,10 +14,12 @@ import {
   toDoRemovalAgentConfig,
   toDoUpaterAgentConfig,
 } from "./agents";
-import { PermittedCategories } from "./constants/permitted_categories";
-import { PriorityRankingCriteria } from "./constants/priority_ranking_criteria";
-import { toDoGuardRail } from "./guardrails/todo_input.guardrail";
-import { Prompts } from "./prompts";
+import {
+  LLMModels,
+  PermittedCategories,
+  PriorityRankingCriteria,
+} from "./constants";
+import { toDoGuardRail } from "./guardrails";
 import { extractId } from "./util";
 
 dotenv.config();
@@ -64,8 +67,8 @@ async function ToDoDemo() {
 
     // orchestrating agent
     const ToDoOrchestratorAgent = Agent.create({
-      name: "To-Do Item Orchestrator Agent",
-      instructions: Prompts.orchestrator,
+      name: AgentConfig.orchestrator.name,
+      instructions: AgentConfig.orchestrator.prompt,
       handoffs: [
         MCPCurrentWeatherAgent,
         MCPToDoCreatorAgent,
@@ -74,7 +77,7 @@ async function ToDoDemo() {
         MCPToDoRemovalAgent,
       ],
       inputGuardrails: [toDoGuardRail],
-      model: "gpt-4o-mini",
+      model: LLMModels.gpt4oMini,
     });
 
     const weatherResult = await run(

@@ -1,11 +1,12 @@
 import z from "zod";
-import { Prompts } from "../prompts";
+import { AgentConfig } from "../agent_config";
+import { LLMModels } from "../constants";
 
 export const toDoRemovalAgentConfig = {
-  name: "ToDo Item Remover",
-  instructions: Prompts.todoItemRemover,
-  handoffDescription: "A specialist in removing a specific todo item by id.",
-  model: "gpt-4o-mini",
+  name: AgentConfig.todoItemRemover.name,
+  instructions: AgentConfig.todoItemRemover.prompt,
+  handoffDescription: AgentConfig.todoItemRemover.handoffDescription,
+  model: LLMModels.gpt4oMini,
   outputType: z.object({
     id: z.string(),
     removed: z.boolean(),

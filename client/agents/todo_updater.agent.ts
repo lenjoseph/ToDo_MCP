@@ -1,10 +1,11 @@
 import z from "zod";
-import { Prompts } from "../prompts";
+import { AgentConfig } from "../agent_config";
+import { LLMModels } from "../constants";
 
 export const toDoUpaterAgentConfig = {
-  name: "Todo Item Updater",
-  instructions: Prompts.todoItemUpdater,
-  handoffDescription: "A specialist in updating a todo item by id",
+  name: AgentConfig.todoItemUpdater.name,
+  instructions: AgentConfig.todoItemUpdater.prompt,
+  handoffDescription: AgentConfig.todoItemUpdater.handoffDescription,
   outputType: z.object({
     id: z.string(),
     title: z.string(),
@@ -13,5 +14,5 @@ export const toDoUpaterAgentConfig = {
     priorityRating: z.string(),
     optimalWeatherConditions: z.string().optional().nullable(),
   }),
-  model: "gpt-4.1",
+  model: LLMModels.default,
 };
