@@ -24,3 +24,6 @@ The agents are configured to adhere to specific input/output data structures, an
 # Functionality
 
 This application manages a collection of to-do items, and augments the functionality by adding metadata relative to priority, completion, and other dependencies.
+
+The main process impelements an interval logger to communicate that the process is still working between agent resolutions. This is also helpful
+to get a sense of execution speed for each operation.
