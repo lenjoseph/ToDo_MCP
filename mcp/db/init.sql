@@ -1,4 +1,3 @@
--- Create todos table (SQLite doesn't support ENUMs, but we'll validate in application layer)
 CREATE TABLE IF NOT EXISTS todos (
     id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('ab89',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6)))),
     title TEXT NOT NULL,
@@ -17,11 +16,5 @@ CREATE TABLE IF NOT EXISTS todos (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create trigger to automatically update updated_at
-CREATE TRIGGER update_todos_updated_at
-    AFTER UPDATE ON todos
-    FOR EACH ROW
-    BEGIN
-        UPDATE todos SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-    END
+
 
