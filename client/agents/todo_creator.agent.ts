@@ -4,13 +4,10 @@ import { LLMModels } from "../constants";
 import { fetchPermittedCategories } from "../context";
 import { priorityRatingTool, weatherConditionsTool } from "../tools";
 
-// needs to use paralell agents in order to facilitate two creation processes
 export const todoCreatorAgentConfig = {
   name: AgentConfig.todoItemCreator.name,
   instructions: AgentConfig.todoItemCreator.prompt,
   handoffDescription: AgentConfig.todoItemCreator.handoffDescription,
-
-  //@ts-ignore
   tools: [priorityRatingTool, fetchPermittedCategories, weatherConditionsTool],
   outputType: z.object({
     id: z.string(),
