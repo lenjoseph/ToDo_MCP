@@ -70,32 +70,3 @@ export const AgentConfig = {
       "A specialist in validating todo input against permitted categories",
   },
 };
-
-// For backward compatibility, export individual objects
-export const Names = {
-  currentWeather: AgentConfig.currentWeather.name,
-  todoItemCreator: AgentConfig.todoItemCreator.name,
-  todoItemLister: AgentConfig.todoItemLister.name,
-  todoItemRemover: AgentConfig.todoItemRemover.name,
-  todoItemUpdater: AgentConfig.todoItemUpdater.name,
-};
-
-export const Handoffs = {
-  currentWeather: AgentConfig.currentWeather.handoffDescription,
-  todoItemCreator: AgentConfig.todoItemCreator.handoffDescription,
-  todoItemLister: AgentConfig.todoItemLister.handoffDescription,
-  todoItemRemover: AgentConfig.todoItemRemover.handoffDescription,
-  todoItemUpdater: AgentConfig.todoItemUpdater.handoffDescription,
-};
-
-export const Prompts = {
-  orchestrator: AgentConfig.orchestrator.prompt,
-  currentWeather: AgentConfig.currentWeather.prompt,
-  optimalConditions: AgentConfig.optimalConditions.prompt,
-  priorityRating: AgentConfig.priorityRating.prompt,
-  todoItemCreator: AgentConfig.todoItemCreator.prompt,
-  todoItemUpdater: AgentConfig.todoItemUpdater.prompt,
-  todoItemLister: AgentConfig.todoItemLister.prompt,
-  todoItemRemover: AgentConfig.todoItemRemover.prompt,
-  toDoInputGuardrail: AgentConfig.toDoInputGuardrail.prompt,
-};
