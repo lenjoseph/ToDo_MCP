@@ -20,7 +20,7 @@ import {
   PriorityRankingCriteria,
 } from "./constants";
 import { toDoGuardRail } from "./guardrails";
-import { extractId } from "./util";
+import { extractId, withPeriodicLogging } from "./util";
 
 dotenv.config();
 
@@ -80,72 +80,87 @@ async function ToDoDemo() {
       model: LLMModels.gpt4oMini,
     });
 
-    const weatherResult = await run(
-      ToDoOrchestratorAgent,
-      "Are current weather conditions optimal for walking the dog in New York, New York?"
+    // Check if weather conditions are suitable for a given todo item
+    const weatherResult = await withPeriodicLogging(
+      run(
+        ToDoOrchestratorAgent,
+        "Are current weather conditions optimal for walking the dog in New York, New York?"
+      ),
+      "Checking weather conditions..."
     );
     console.log("WEATHER RESULT");
     console.log(weatherResult.finalOutput);
 
-    const createResultOne = await run(
-      ToDoOrchestratorAgent,
-      "Add a new todo item for performing routine building exterior intercom maintenance.",
-      {
-        context: {
-          priorityRankingCriteria: PriorityRankingCriteria,
-          permittedCategories: PermittedCategories,
-        },
-      }
+    // Create a new todo item
+    const createResultOne = await withPeriodicLogging(
+      run(
+        ToDoOrchestratorAgent,
+        "Add a new todo item for performing routine building exterior intercom maintenance.",
+        {
+          context: {
+            priorityRankingCriteria: PriorityRankingCriteria,
+            permittedCategories: PermittedCategories,
+          },
+        }
+      ),
+      "Creating todo item..."
     );
     console.log("CREATE TODO OUTPUT");
     console.log(createResultOne.finalOutput);
 
     const createdTodoId = extractId(createResultOne.finalOutput as unknown);
 
-    // update the record that was created
-    const updateResult = await run(
-      ToDoOrchestratorAgent,
-      `Update the status for the todo with id ${createdTodoId} to Complete.`
+    // Update the created todo item
+    const updateResult = await withPeriodicLogging(
+      run(
+        ToDoOrchestratorAgent,
+        `Update the status for the todo with id ${createdTodoId} to Complete.`
+      ),
+      "Updating todo item..."
     );
     console.log("UPDATE RESULT OUTPUT");
     console.log(updateResult.finalOutput);
 
-    // list todo items
-
-    const listResult = await run(
-      ToDoOrchestratorAgent,
-      "List the current todo items."
+    // Retrieve and display all current todo items
+    const listResult = await withPeriodicLogging(
+      run(ToDoOrchestratorAgent, "List the current todo items."),
+      "Listing todo items..."
     );
     console.log("LIST RESULT OUTPUT");
     console.log(listResult.finalOutput);
 
-    // remove todo item
-    const removeResult = await run(
-      ToDoOrchestratorAgent,
-      `Remove the todo item with id ${createdTodoId}.`
+    // Delete the previously created todo item
+    const removeResult = await withPeriodicLogging(
+      run(
+        ToDoOrchestratorAgent,
+        `Remove the todo item with id ${createdTodoId}.`
+      ),
+      "Removing todo item..."
     );
     console.log("REMOVE RESULT OUTPUT");
     console.log(removeResult.finalOutput);
 
-    // list todo items
-
-    const listResultTwo = await run(
-      ToDoOrchestratorAgent,
-      "List the current todo items."
+    // Verify todo list after deletion
+    const listResultTwo = await withPeriodicLogging(
+      run(ToDoOrchestratorAgent, "List the current todo items."),
+      "Listing todo items..."
     );
     console.log("LIST RESULT OUTPUT - POST DELETION");
     console.log(listResultTwo.finalOutput);
 
-    // try to create illigitimate to-do item, blocked by guardrail
-    const createResultTwo = await run(
-      ToDoOrchestratorAgent,
-      "Add a new todo item for getting the car washed.",
-      {
-        context: {
-          priorityRankingCriteria: PriorityRankingCriteria,
-          permittedCategories: PermittedCategories,
-        },
-      }
+    // Attempt to create invalid todo item to test guardrail protection
+    const createResultTwo = await withPeriodicLogging(
+      run(
+        ToDoOrchestratorAgent,
+        "Add a new todo item for getting the car washed.",
+        {
+          context: {
+            priorityRankingCriteria: PriorityRankingCriteria,
+            permittedCategories: PermittedCategories,
+          },
+        }
+      ),
+      "Creating todo item..."
     );
 
     console.log(createResultTwo.finalOutput);

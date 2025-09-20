@@ -14,3 +14,17 @@ export const extractId = (output: unknown): string => {
   }
   throw new Error("Unable to extract todo id from createResultOne.finalOutput");
 };
+
+// Utility function to show periodic "working..." messages
+export const withPeriodicLogging = <T>(
+  promise: Promise<T>,
+  message: string = "working..."
+): Promise<T> => {
+  const interval = setInterval(() => {
+    console.log(message);
+  }, 3000);
+
+  return promise.finally(() => {
+    clearInterval(interval);
+  });
+};
