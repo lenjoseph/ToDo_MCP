@@ -86,7 +86,7 @@ async function ToDoDemo() {
 
     const createResultOne = await run(
       ToDoOrchestratorAgent,
-      "Add a new todo item for performing routine intercom maintenance.",
+      "Add a new todo item for performing routine building exterior intercom maintenance.",
       {
         context: {
           priorityRankingCriteria: PriorityRankingCriteria,
@@ -123,6 +123,15 @@ async function ToDoDemo() {
     );
     console.log("REMOVE RESULT OUTPUT");
     console.log(removeResult.finalOutput);
+
+    // list todo items
+
+    const listResultTwo = await run(
+      ToDoOrchestratorAgent,
+      "List the current todo items."
+    );
+    console.log("LIST RESULT OUTPUT - POST DELETION");
+    console.log(listResultTwo.finalOutput);
 
     // try to create illigitimate to-do item, blocked by guardrail
     const createResultTwo = await run(

@@ -8,6 +8,6 @@ const weatherConditionsEstimator = new Agent({
 
 export const weatherConditionsTool = weatherConditionsEstimator.asTool({
   toolName: "weather_conditions_estimation",
-  toolDescription: `Estimate the optimal weather conditions to execute a supplied 
+  toolDescription: `Estimates the optimal weather conditions to execute the supplied 
     to-do item task.`,
 });

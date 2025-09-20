@@ -27,7 +27,7 @@ export type ToDo = {
   // categorical rating to influence order of execution
   priorityRating: PriorityRating;
   //   if this to do item requires certain weather conditions, notate
-  optimalWeatherConditions?: string;
+  optimalWeatherConditions: string;
   createdAt: string;
   updatedAt: string;
 };

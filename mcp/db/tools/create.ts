@@ -10,7 +10,7 @@ export async function createTodo({
   title: string;
   category: string;
   priorityRating: string;
-  optimalWeatherConditions?: string | null;
+  optimalWeatherConditions: string;
 }) {
   const id = randomUUID();
 

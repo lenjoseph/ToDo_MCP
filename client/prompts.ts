@@ -3,8 +3,8 @@ export const Prompts = {
   currentWeather: `You use the discovered tools to get current weather conditions for the input location. 
                 Only call this tool once. Then you determine if the current weather is optimal for the input
                 to-do based on the tool response.`,
-  optimalConditions: `For the provided to-do item, determine if there 
-    are specific weather conditions that would make it easier to execute the task. If it doesn't matter use undefined`,
+  optimalConditions: `For the provided to-do item, determine if it's outdoors. If it is, determine the optimaal weather conditions
+  to execute the task. Otherwise, return "any weather".`,
   priorityRating: `You are a specialist in rating priority category for todo items. You use the priority criteria from your tool to 
     make category determinations.`,
   todoItemCreator: `You create a new Todo item based on the todo title input.You build the new todo item, and save it to 

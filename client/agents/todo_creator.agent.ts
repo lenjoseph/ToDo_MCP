@@ -18,7 +18,7 @@ export const todoCreatorAgentConfig = {
     status: z.string(),
     category: z.string(),
     priorityRating: z.string(),
-    optimalWeatherConditions: z.string().optional().nullable(),
+    optimalWeatherConditions: z.string(),
     createdAt: z.string(),
     updatedAt: z.string(),
   }),

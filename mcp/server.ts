@@ -67,7 +67,7 @@ server.registerTool(
       title: z.string(),
       category: ZodToDoCategory,
       priorityRating: ZodPriorityRating,
-      optimalWeatherConditions: z.string().optional().nullable(),
+      optimalWeatherConditions: z.string(),
     },
   },
   async ({ title, category, priorityRating, optimalWeatherConditions }) => {
