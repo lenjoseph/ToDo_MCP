@@ -15,4 +15,5 @@ export const toDoUpaterAgentConfig = {
     optimalWeatherConditions: z.string().optional().nullable(),
   }),
   model: LLMModels.default,
+  modelSettings: { temperature: 0.1 },
 };

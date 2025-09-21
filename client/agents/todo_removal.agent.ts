@@ -7,6 +7,7 @@ export const toDoRemovalAgentConfig = {
   instructions: AgentConfig.todoItemRemover.prompt,
   handoffDescription: AgentConfig.todoItemRemover.handoffDescription,
   model: LLMModels.gpt4oMini,
+  modelSettings: { temperature: 0.1 },
   outputType: z.object({
     id: z.string(),
     removed: z.boolean(),

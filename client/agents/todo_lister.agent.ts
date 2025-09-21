@@ -7,6 +7,7 @@ export const toDoListerAgentConfig = {
   instructions: AgentConfig.todoItemLister.prompt,
   handoffDescription: AgentConfig.todoItemLister.handoffDescription,
   model: LLMModels.gpt4oMini,
+  modelSettings: { temperature: 0.1 },
   outputType: z.object({
     items: z.array(
       z.object({

@@ -20,4 +20,5 @@ export const todoCreatorAgentConfig = {
     updatedAt: z.string(),
   }),
   model: LLMModels.default,
+  modelSettings: { temperature: 0.1 },
 };

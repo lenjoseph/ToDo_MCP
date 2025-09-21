@@ -4,10 +4,12 @@ To-Do List implemented on MCP with TypeScript
 
 # Running Locally
 
-1. From root, run `npm i`
-2. Ensure valid keys are set for OpenAI and WeatherAPI in a .env file (see example template)
-3. From root, run `npm start`
-4. Terminal output will show application behavior.
+1. Ensure npm v.5.2.0 or higher and current node version are available in your env
+2. From root, run `npm i`
+3. Ensure valid keys are set for OpenAI and WeatherAPI in a .env file (see example template).
+   Free WeatherAPI key can be obtained here: https://www.weatherapi.com/signup.aspx
+4. From root, run `npm start`
+5. Terminal output will show application behavior.
 
 # Architecture
 

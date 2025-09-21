@@ -13,4 +13,5 @@ export const currentWeatherAgentConfig = {
     recommendation: z.string(),
   }),
   model: LLMModels.gpt4oMini,
+  modelSettings: { temperature: 0.6 },
 };
