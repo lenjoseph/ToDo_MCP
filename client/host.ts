@@ -6,20 +6,15 @@ import {
 } from "@openai/agents";
 import * as dotenv from "dotenv";
 import * as path from "node:path";
-import { AgentConfig } from "./agent_config";
 import {
   currentWeatherAgentConfig,
+  orchestratorAgentConfig,
   todoCreatorAgentConfig,
   toDoListerAgentConfig,
   toDoRemovalAgentConfig,
   toDoUpaterAgentConfig,
 } from "./agents";
-import {
-  LLMModels,
-  PermittedCategories,
-  PriorityRankingCriteria,
-} from "./constants";
-import { toDoGuardRail } from "./guardrails";
+import { PermittedCategories, PriorityRankingCriteria } from "./constants";
 import { extractId, withPeriodicLogging } from "./util";
 
 dotenv.config();
@@ -39,36 +34,40 @@ async function ToDoDemo() {
     .catch((e) => console.error(e));
 
   try {
-    // check if current weather conditions are ideal for performing the supplied task using mcpServer util
     const MCPCurrentWeatherAgent = Agent.create({
       ...currentWeatherAgentConfig,
+      name: currentWeatherAgentConfig.name!,
       mcpServers: [mcpServer],
     });
 
     const MCPToDoCreatorAgent = Agent.create({
       ...todoCreatorAgentConfig,
+      name: todoCreatorAgentConfig.name!,
       mcpServers: [mcpServer],
     });
 
     const MCPTodoUpdaterAgent = Agent.create({
       ...toDoUpaterAgentConfig,
+      name: toDoUpaterAgentConfig.name!,
       mcpServers: [mcpServer],
     });
 
     const MCPToDoListerAgent = Agent.create({
       ...toDoListerAgentConfig,
+      name: toDoListerAgentConfig.name!,
       mcpServers: [mcpServer],
     });
 
     const MCPToDoRemovalAgent = Agent.create({
       ...toDoRemovalAgentConfig,
+      name: toDoRemovalAgentConfig.name!,
       mcpServers: [mcpServer],
     });
 
     // orchestrating agent
-    const ToDoOrchestratorAgent = Agent.create({
-      name: AgentConfig.orchestrator.name,
-      instructions: AgentConfig.orchestrator.prompt,
+    const OrchestratorAgent = Agent.create({
+      ...orchestratorAgentConfig,
+      name: orchestratorAgentConfig.name!,
       handoffs: [
         MCPCurrentWeatherAgent,
         MCPToDoCreatorAgent,
@@ -76,14 +75,12 @@ async function ToDoDemo() {
         MCPTodoUpdaterAgent,
         MCPToDoRemovalAgent,
       ],
-      inputGuardrails: [toDoGuardRail],
-      model: LLMModels.gpt4oMini,
     });
 
     // Check if weather conditions are suitable for a given todo item
     const weatherResult = await withPeriodicLogging(
       run(
-        ToDoOrchestratorAgent,
+        OrchestratorAgent,
         "Are current weather conditions optimal for walking the dog in New York, New York?"
       ),
       "Checking weather conditions..."
@@ -94,7 +91,7 @@ async function ToDoDemo() {
     // Create a new todo item
     const createResultOne = await withPeriodicLogging(
       run(
-        ToDoOrchestratorAgent,
+        OrchestratorAgent,
         "Add a new todo item for performing routine building exterior intercom maintenance.",
         {
           context: {
@@ -113,7 +110,7 @@ async function ToDoDemo() {
     // Update the created todo item
     const updateResult = await withPeriodicLogging(
       run(
-        ToDoOrchestratorAgent,
+        OrchestratorAgent,
         `Update the status for the todo with id ${createdTodoId} to Complete.`
       ),
       "Updating todo item..."
@@ -123,7 +120,7 @@ async function ToDoDemo() {
 
     // Retrieve and display all current todo items
     const listResult = await withPeriodicLogging(
-      run(ToDoOrchestratorAgent, "List the current todo items."),
+      run(OrchestratorAgent, "List the current todo items."),
       "Listing todo items..."
     );
     console.log("LIST RESULT OUTPUT");
@@ -131,10 +128,7 @@ async function ToDoDemo() {
 
     // Delete the previously created todo item
     const removeResult = await withPeriodicLogging(
-      run(
-        ToDoOrchestratorAgent,
-        `Remove the todo item with id ${createdTodoId}.`
-      ),
+      run(OrchestratorAgent, `Remove the todo item with id ${createdTodoId}.`),
       "Removing todo item..."
     );
     console.log("REMOVE RESULT OUTPUT");
@@ -142,7 +136,7 @@ async function ToDoDemo() {
 
     // Verify todo list after deletion
     const listResultTwo = await withPeriodicLogging(
-      run(ToDoOrchestratorAgent, "List the current todo items."),
+      run(OrchestratorAgent, "List the current todo items."),
       "Listing todo items..."
     );
     console.log("LIST RESULT OUTPUT - POST DELETION");
@@ -151,7 +145,7 @@ async function ToDoDemo() {
     // Attempt to create invalid todo item to test guardrail protection
     const createResultTwo = await withPeriodicLogging(
       run(
-        ToDoOrchestratorAgent,
+        OrchestratorAgent,
         "Add a new todo item for getting the car washed.",
         {
           context: {
