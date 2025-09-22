@@ -1,6 +1,6 @@
 # ToDo MCP Server
 
-To-Do List implemented on MCP with TypeScript
+To-Do List implemented on MCP with TypeScript and OpenAI Agent SDK
 
 # Running Locally
 
