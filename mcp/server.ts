@@ -1,9 +1,21 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import z from "zod";
 import { migrate } from "./db/migrate";
-import { createTodo, listTodos, removeTodo, updateTodo } from "./db/tools";
-import { getCurrentWeather } from "./util/utils";
+import {
+  createTodo,
+  getToDo,
+  listTodos,
+  removeTodo,
+  updateTodo,
+} from "./db/tools";
+import {
+  CreateToDoSchema,
+  CurrentWeatherSchema,
+  GetToDoSchema,
+  RemoveToDoSchema,
+  UpdateToDoSchema,
+} from "./schemas";
+import { getCurrentWeather } from "./utils";
 
 // Initialize database on startup
 async function initializeDatabase() {
@@ -15,29 +27,12 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
-// Define the enums based on your schema requirements
-const ToDoStatus = ["Incomplete", "In Progress", "Complete"] as const;
-const ToDoCategory = [
-  "Customer Acquisition",
-  "Operational Efficiency",
-  "Product Manufacturing",
-  "System Management",
-  "Financial Optimization",
-  "Product Servicing & Repairs",
-] as const;
-const PriorityRating = ["Low", "Medium", "High"] as const;
-
-// Create Zod schemas for the enums
-const ZodToDoStatus = z.enum(ToDoStatus);
-const ZodToDoCategory = z.enum(ToDoCategory);
-const ZodPriorityRating = z.enum(PriorityRating);
-
 server.registerTool(
   "check_weather_conditions",
   {
     title: "Check Weather Conditions",
     description: "Checks the current weather conditions for a given location",
-    inputSchema: { location: z.string() },
+    inputSchema: CurrentWeatherSchema,
   },
   async ({ location }) => {
     if (!location) {
@@ -60,12 +55,7 @@ server.registerTool(
   {
     title: "Create ToDo Item",
     description: "Creates a new to-do item",
-    inputSchema: {
-      title: z.string(),
-      category: ZodToDoCategory,
-      priorityRating: ZodPriorityRating,
-      optimalWeatherConditions: z.string(),
-    },
+    inputSchema: CreateToDoSchema,
   },
   async ({ title, category, priorityRating, optimalWeatherConditions }) => {
     return await createTodo({
@@ -82,14 +72,7 @@ server.registerTool(
   {
     title: "Update ToDo Item",
     description: "Updates an existing to-do item by id",
-    inputSchema: {
-      id: z.string().uuid(),
-      title: z.string().optional().nullable(),
-      status: ZodToDoStatus.optional().nullable(),
-      category: ZodToDoCategory.optional().nullable(),
-      priorityRating: ZodPriorityRating.optional().nullable(),
-      optimalWeatherConditions: z.string().optional().nullable(),
-    },
+    inputSchema: UpdateToDoSchema,
   },
   async ({
     id,
@@ -111,11 +94,22 @@ server.registerTool(
 );
 
 server.registerTool(
+  "get_todo",
+  {
+    title: "Get ToDo Item By Id",
+    description: "Gets a single todo item by id",
+    inputSchema: GetToDoSchema,
+  },
+  async ({ id }) => {
+    return await getToDo({ id });
+  }
+);
+
+server.registerTool(
   "list_todos",
   {
     title: "List ToDo Items",
     description: "Lists all to-do items",
-    inputSchema: {},
   },
   async () => {
     return await listTodos();
@@ -127,9 +121,7 @@ server.registerTool(
   {
     title: "Remove ToDo Item",
     description: "Removes a to-do item by id",
-    inputSchema: {
-      id: z.string().uuid(),
-    },
+    inputSchema: RemoveToDoSchema,
   },
   async ({ id }) => {
     return await removeTodo({ id });

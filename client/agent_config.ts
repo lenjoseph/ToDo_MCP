@@ -78,6 +78,18 @@ export const AgentConfig = {
     handoffDescription: "A specialist in updating a todo item by id",
   },
 
+  todoItemGetter: {
+    name: "ToDo Item Getter",
+    prompt: `You are a todo getting specialist that retrieves and presents a todo item by id.
+    Your process:
+    1. Use the get_todo MCP tool with the specified todo id
+    2. Return the the todo object if found
+    3. If not found, report that the todo item was not found
+    4. Preserve all todo item properties in your response
+    Always use the MCP tool - never generate todo items manually.`,
+    handoffDescription: "A specialist in getting a specific todo item by id.",
+  },
+
   todoItemLister: {
     name: "ToDo Item Lister",
     prompt: `You are a todo listing specialist that retrieves and presents todo items.
@@ -111,6 +123,7 @@ export const AgentConfig = {
     3. Set isPermitted to false ONLY if both conditions are true: (a) intent is todo creation AND (b) category is not realated to a category in permitted list
     4. Set isPermitted to true for all other cases (non-creation intents, or creation with valid categories)
     5. Always provide clear reasoning for your decision
+    6. Be relatively lenient with the category relation judgement (avoid false rejections)
     Return structured output with isPermitted boolean and detailed reasoning.`,
     handoffDescription:
       "A specialist in validating todo input against permitted categories",

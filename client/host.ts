@@ -10,6 +10,7 @@ import {
   currentWeatherAgentConfig,
   orchestratorAgentConfig,
   todoCreatorAgentConfig,
+  toDoGetterAgentConfig,
   toDoListerAgentConfig,
   toDoRemovalAgentConfig,
   toDoUpaterAgentConfig,
@@ -46,6 +47,12 @@ async function ToDoDemo() {
       mcpServers: [mcpServer],
     });
 
+    const MCPToDoGetterAgent = Agent.create({
+      ...toDoGetterAgentConfig,
+      name: toDoGetterAgentConfig.name!,
+      mcpServers: [mcpServer],
+    });
+
     const MCPTodoUpdaterAgent = Agent.create({
       ...toDoUpaterAgentConfig,
       name: toDoUpaterAgentConfig.name!,
@@ -72,6 +79,7 @@ async function ToDoDemo() {
         MCPCurrentWeatherAgent,
         MCPToDoCreatorAgent,
         MCPToDoListerAgent,
+        MCPToDoGetterAgent,
         MCPTodoUpdaterAgent,
         MCPToDoRemovalAgent,
       ],
@@ -107,11 +115,19 @@ async function ToDoDemo() {
 
     const createdTodoId = extractId(createResultOne.finalOutput as unknown);
 
+    // get the created todo item by id
+    const getResult = await withPeriodicLogging(
+      run(OrchestratorAgent, `Get the todo item with id ${createdTodoId}.`),
+      "Getting todo item..."
+    );
+    console.log("GET RESULT OUTPUT");
+    console.log(getResult.finalOutput);
+
     // Update the created todo item
     const updateResult = await withPeriodicLogging(
       run(
         OrchestratorAgent,
-        `Update the status for the todo with id ${createdTodoId} to Complete.`
+        `Update the status for the todo item with id ${createdTodoId} to Complete.`
       ),
       "Updating todo item..."
     );
