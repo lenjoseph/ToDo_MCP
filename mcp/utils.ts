@@ -3,6 +3,8 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+type CurrentWeatherOutput = { current: { condition: { text: string } } };
+
 export const getCurrentWeather = async (location: string) => {
   const url = "https://api.weatherapi.com/v1/current.json";
 
@@ -26,7 +28,7 @@ export const getCurrentWeather = async (location: string) => {
         params,
       }
     );
-    const data = response.data as { current: { condition: { text: string } } };
+    const data = response.data as CurrentWeatherOutput;
 
     return data.current.condition.text;
   } catch (error) {
