@@ -19,6 +19,5 @@ CREATE TABLE IF NOT EXISTS todos (
 -- Seed data
 INSERT INTO todos (title, category, priority_rating, optimal_weather_conditions, status)
 VALUES 
-    ('Implement new customer onboarding flow', 'Customer Acquisition', 'High', 'Any weather conditions', 'Incomplete'),
-    ('Optimize manufacturing line B efficiency', 'Product Manufacturing', 'Medium', 'Indoor temperature controlled environment', 'In Progress');
+    ('Implement new customer onboarding flow', 'Customer Acquisition', 'High', 'Any weather conditions', 'Incomplete');
 
