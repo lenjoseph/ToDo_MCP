@@ -25,6 +25,7 @@ async function ToDoDemo() {
   const mcpServer = new MCPServerStdio({
     name: "ToDo MCP Server",
     fullCommand: `npx ts-node ${path.resolve(__dirname, "../mcp/server.ts")}`,
+    cacheToolsList: true,
   });
 
   await mcpServer
