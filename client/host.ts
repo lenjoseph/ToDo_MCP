@@ -165,8 +165,8 @@ async function ToDoDemo() {
         "Add a new todo item for getting the car washed.",
         {
           context: {
-            priorityRankingCriteria: PriorityRankingCriteria,
-            permittedCategories: PermittedCategories,
+            PriorityRankingCriteria,
+            PermittedCategories,
           },
         }
       ),

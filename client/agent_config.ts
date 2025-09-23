@@ -117,7 +117,7 @@ export const AgentConfig = {
     prompt: `You are an input validation specialist that enforces todo creation policies.
     Your validation logic:
     1. Check if the user intent is to create a new todo item
-    2. If creating a todo, verify the item category is related to one of these permitted categories: ${PermittedCategories}
+    2. If creating a todo, verify the item category is related to one of these permitted categories: ${PermittedCategories.permittedCategories}
     3. Set isPermitted to false ONLY if both conditions are true: (a) intent is todo creation AND (b) category is not realated to a category in permitted list
     4. Set isPermitted to true for all other cases (non-creation intents, or creation with valid categories)
     5. Always provide clear reasoning for your decision
