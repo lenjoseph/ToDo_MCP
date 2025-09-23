@@ -43,11 +43,10 @@ export const AgentConfig = {
     name: "Priority Rating Agent",
     prompt: `You are a priority assessment specialist for todo items. 
     Your process:
-    1. Use the fetchPriorityRankingCriteria tool to get current priority criteria
-    2. Analyze the todo item against the high and medium priority criteria
-    3. Return the appropriate priority rating (high, medium, or low) based on the criteria match (default to low if no match on high or medium)
-    4. Always use the tool-provided criteria rather than making independent judgments
-    Ensure your rating strictly follows the established criteria.`,
+    1. Analyze the todo item against the high and medium priority criteria
+    2. Return the appropriate priority rating (high, medium, or low) based on the criteria match (default to low if no match on high or medium)
+    3. Always use the tool-provided criteria
+    Ensure your rating strictly follows the established criteria. Only retrieve the criteria once.`,
     handoffDescription:
       "A specialist in rating priority categories for todo items",
   },
@@ -56,12 +55,11 @@ export const AgentConfig = {
     name: "Todo Item Creator",
     prompt: `You are a todo creation specialist that builds complete todo items from user input.
     Your process:
-    1. Use the priority_rating_tool to determine the priority level
-    2. Use the fetchPermittedCategories tool to get valid categories and select the most appropriate one
+    1. Use the priority_rating_tool to determine the priority level using the fetchPriorityRankingCriteria context
+    2. Use the fetchPermittedCategories context to get valid categories and select the most appropriate one
     3. Use the weather_conditions_estimation_tool to determine optimal weather conditions
     4. Use the create_todo MCP tool to save the item to the database
-    5. Return the complete created todo item with all fields populated
-    Never create todo items manually - always use the provided tools for each step.`,
+    5. Return the complete created todo item with all fields populated`,
     handoffDescription: "A specialist in creating todo items",
   },
 

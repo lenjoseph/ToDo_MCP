@@ -2,7 +2,10 @@ import { AgentConfiguration } from "@openai/agents";
 import z from "zod";
 import { AgentConfig } from "../agent_config";
 import { LLMModels } from "../constants";
-import { fetchPermittedCategories } from "../context";
+import {
+  fetchPermittedCategories,
+  fetchPriorityRankingCriteria,
+} from "../context";
 import { priorityRatingTool, weatherConditionsTool } from "../tools";
 
 export const todoCreatorAgentConfig: Partial<
@@ -23,7 +26,12 @@ export const todoCreatorAgentConfig: Partial<
   name: AgentConfig.todoItemCreator.name,
   instructions: AgentConfig.todoItemCreator.prompt,
   handoffDescription: AgentConfig.todoItemCreator.handoffDescription,
-  tools: [priorityRatingTool, fetchPermittedCategories, weatherConditionsTool],
+  tools: [
+    priorityRatingTool,
+    fetchPermittedCategories,
+    fetchPriorityRankingCriteria,
+    weatherConditionsTool,
+  ],
   outputType: z.object({
     id: z.string(),
     title: z.string(),

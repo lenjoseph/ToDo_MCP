@@ -2,8 +2,7 @@ import { RunContext, tool } from "@openai/agents";
 import z from "zod";
 
 interface IPriorityRankingCriteria {
-  high: string[];
-  medium: string[];
+  priorityRankingCriteria: { high: string[]; medium: string[] };
 }
 
 export const fetchPriorityRankingCriteria = tool({
@@ -14,8 +13,8 @@ export const fetchPriorityRankingCriteria = tool({
     const context = runContext?.context as
       | Partial<IPriorityRankingCriteria>
       | undefined;
-    return `The priority ranking criteria for high priority is 
-    ${context?.high}, and for medium priority is 
-    ${context?.medium}`;
+    return `The priority ranking criteria for high priority are 
+    ${context?.priorityRankingCriteria.high}, and for medium priority are 
+    ${context?.priorityRankingCriteria.medium}`;
   },
 });

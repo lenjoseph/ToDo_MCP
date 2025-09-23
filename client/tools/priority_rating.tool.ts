@@ -2,7 +2,6 @@ import { Agent } from "@openai/agents";
 import z from "zod";
 import { AgentConfig } from "../agent_config";
 import { LLMModels } from "../constants";
-import { fetchPriorityRankingCriteria } from "../context";
 
 const priorityRatingAgent = new Agent({
   name: AgentConfig.priorityRating.name,
@@ -10,7 +9,6 @@ const priorityRatingAgent = new Agent({
   outputType: z.object({
     priorityRating: z.enum(["high", "medium", "low"]),
   }),
-  tools: [fetchPriorityRankingCriteria],
   model: LLMModels.gpt4oMini,
 });
 
