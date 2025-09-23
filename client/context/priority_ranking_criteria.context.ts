@@ -1,9 +1,6 @@
 import { RunContext, tool } from "@openai/agents";
 import z from "zod";
-
-interface IPriorityRankingCriteria {
-  priorityRankingCriteria: { high: string[]; medium: string[] };
-}
+import { IPriorityRankingCriteria } from "../constants";
 
 export const fetchPriorityRankingCriteria = tool({
   name: "fetch_priority_ranking_tool",

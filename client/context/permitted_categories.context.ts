@@ -1,9 +1,6 @@
 import { RunContext, tool } from "@openai/agents";
 import z from "zod";
-
-interface IPermittedCategories {
-  permittedCategories: string[];
-}
+import { IPermittedCategories } from "../constants";
 
 export const fetchPermittedCategories = tool({
   name: "fetch_permitted_categories_tool",

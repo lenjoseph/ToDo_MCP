@@ -103,8 +103,8 @@ async function ToDoDemo() {
         "Add a new todo item for performing routine building exterior intercom maintenance.",
         {
           context: {
-            priorityRankingCriteria: PriorityRankingCriteria,
-            permittedCategories: PermittedCategories,
+            PriorityRankingCriteria,
+            PermittedCategories,
           },
         }
       ),
