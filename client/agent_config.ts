@@ -120,7 +120,7 @@ export const AgentConfig = {
     2. If creating a todo, verify the item category is related to one of these permitted categories: ${PermittedCategories.permittedCategories}
     3. Set isPermitted to false ONLY if both conditions are true: (a) intent is todo creation AND (b) category is not realated to a category in permitted list
     4. Set isPermitted to true for all other cases (non-creation intents, or creation with valid categories)
-    5. Always provide clear reasoning for your decision
+    5. Only provide reasoning for your decision if the action is not permitted, otherwise exclude that property in the output.
     6. Be relatively lenient with the category relation judgement (avoid false rejections)
     Return structured output with isPermitted boolean and detailed reasoning.`,
     handoffDescription:

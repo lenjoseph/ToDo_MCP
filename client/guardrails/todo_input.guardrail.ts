@@ -7,7 +7,7 @@ const toDoGuardRailAgent = new Agent({
   instructions: AgentConfig.toDoInputGuardrail.prompt,
   outputType: z.object({
     isPermitted: z.boolean(),
-    reasoning: z.string(),
+    reasoning: z.string().optional().nullable(),
   }),
 });
 

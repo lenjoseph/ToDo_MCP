@@ -42,6 +42,6 @@ export const todoCreatorAgentConfig: Partial<
     createdAt: z.string(),
     updatedAt: z.string(),
   }),
-  model: LLMModels.default,
+  model: LLMModels.gpt4oMini,
   modelSettings: { temperature: 0.1 },
 };
